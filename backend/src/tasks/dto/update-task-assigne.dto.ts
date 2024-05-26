@@ -1,6 +1,12 @@
-import { IsArray } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsArray, IsString } from "class-validator";
 
-export class updateTaskAssigneeDto {
+export class UpdateTaskAssigneeDto {
+  @ApiProperty({
+    example: ["userId1", "userId2"],
+    description: "Array of user IDs to be assigned to the task",
+  })
   @IsArray()
-  usersIds: string[];
+  @IsString({ each: true })
+  userIds: string[];
 }

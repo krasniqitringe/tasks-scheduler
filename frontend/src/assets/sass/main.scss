@@ -1,0 +1,9 @@
+@import "abstracts/variables", "abstracts/fonts";
+
+@import "vendors/normalize";
+
+@import "layout/header", "layout/footer", "layout/main";
+
+@import "components/modals", "components/task-item", "components/board";
+
+@import "pages/home", "pages/settings", "pages/task";

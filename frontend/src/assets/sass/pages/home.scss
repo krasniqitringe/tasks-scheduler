@@ -1,0 +1,41 @@
+.container {
+  background-color: $athens-gray;
+  padding: 30px 40px;
+  min-height: calc(100vh - 82px);
+}
+
+.title {
+  color: $port-gore;
+  font-size: 30px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.btn {
+  color: $white;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  background: $royal-blue;
+  border: 2px solid $royal-blue;
+  padding: 10px 16px;
+  display: inline-block;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: $white;
+    color: $royal-blue;
+  }
+
+  &.btn-secondary {
+    color: $black;
+    font-weight: 500;
+    border-color: $iron;
+    background-color: transparent;
+
+    &:hover {
+      background-color: $white;
+      color: $royal-blue;
+    }
+  }
+}

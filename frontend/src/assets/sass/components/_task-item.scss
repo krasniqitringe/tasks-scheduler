@@ -1,0 +1,112 @@
+.task-wrapper {
+  background: $white;
+  border-radius: 12px;
+  padding: 24px 16px;
+  margin-bottom: 14px;
+
+  .tag-wrapper {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+
+    .tag {
+      color: $white;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 24px 4px 12px;
+      border-radius: 4px;
+
+      &.purple {
+        background: $royal-blue;
+      }
+
+      &.blue {
+        background: $dodger-blue;
+      }
+
+      &.yellow {
+        background: $buttercup;
+      }
+
+      &.orange {
+        background: $burnt-sienna;
+      }
+    }
+  }
+
+  > img {
+    height: 110px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+
+  h4 {
+    color: $port-gore;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    color: $slate-gray;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0 0 14px 0;
+
+    &.date {
+      border-radius: 4px;
+      border: 1px solid $mercury;
+      color: $port-gore;
+      padding: 4px 8px;
+      margin: 0 0 18px 0;
+    }
+  }
+
+  .task-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .participants-wrapper {
+      display: flex;
+      margin-left: 5px;
+
+      img {
+        width: 24px;
+        height: 18px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center center;
+        border: 1px solid $white;
+        margin-left: -5px;
+      }
+    }
+
+    .multiple-task {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      span {
+        color: $slate-gray;
+        font-size: 12px;
+        font-weight: 700;
+      }
+    }
+
+    .attachment-wrapper,
+    .comment-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      span {
+        color: $slate-gray;
+        font-size: 10px;
+        font-weight: 500;
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+.board-wrapper {
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .board-header {
+    background-color: $white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    border-radius: 10px;
+
+    p {
+      color: $port-gore;
+      font-size: 17px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .actions-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+
+      .add-item {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $titan-white;
+        border-radius: 7px;
+        transition: all 0.3s;
+
+        &:hover {
+          background-color: $cornflower-blue;
+
+          svg rect {
+            fill: $titan-white;
+          }
+        }
+      }
+    }
+  }
+}

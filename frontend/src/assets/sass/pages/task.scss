@@ -1,0 +1,13 @@
+.task-wrapper {
+  .title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 32px;
+  }
+
+  .boards-wrapper {
+    display: flex;
+    gap: 16px;
+    max-height: calc(100vh - 188px);
+  }
+}
