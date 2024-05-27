@@ -9,6 +9,7 @@ import { ValidationPipe } from "@nestjs/common";
 import * as cookieParser from "cookie-parser";
 import { ResponseInterceptor } from "./common/interceptors/response.interceptor";
 import { AllExceptionsFilter } from "./common/filters/all-exceptions.filter";
+import { SeedDataService } from "./common/providers/seed-data.service";
 
 async function bootstrap() {
   dotenv.config();
@@ -45,6 +46,9 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new AllExceptionsFilter());
+  const seedDataService = app.get(SeedDataService);
+
+  await seedDataService.seedIfNoUsersExist();
 
   await app.listen(3000);
 }

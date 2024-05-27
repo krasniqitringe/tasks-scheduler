@@ -7,6 +7,8 @@ import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { DatabaseProvider } from "./common/providers/database.provider";
+import { SeedDataService } from "./common/providers/seed-data.service";
+import { User, UserSchema } from "./users/schemas/user.schema";
 
 @Module({
   imports: [
@@ -17,11 +19,12 @@ import { DatabaseProvider } from "./common/providers/database.provider";
       useClass: DatabaseProvider,
       inject: [ConfigService],
     }),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), // Import UserModel here
     TasksModule,
     UsersModule,
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SeedDataService],
 })
 export class AppModule {}
