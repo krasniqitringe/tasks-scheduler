@@ -13,7 +13,6 @@ import {
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { ObjectId } from "mongoose";
 import {
   ApiTags,
   ApiBody,
@@ -22,9 +21,11 @@ import {
   ApiParam,
 } from "@nestjs/swagger";
 import { User } from "./schemas/user.schema";
-import { ResponseInterceptor } from "src/common /interceptors/response.interceptor";
-import { AllExceptionsFilter } from "src/common /filters/all-exceptions.filter";
+import { ResponseInterceptor } from "src/common/interceptors/response.interceptor";
+import { AllExceptionsFilter } from "src/common/filters/all-exceptions.filter";
 import { AuthGuard } from "@nestjs/passport";
+import { InjectModel } from "@nestjs/mongoose";
+import { IdValidationMiddleware } from "src/common/middlewares/guard.middleware";
 
 @ApiTags("users")
 @Controller("users")
@@ -34,10 +35,12 @@ import { AuthGuard } from "@nestjs/passport";
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @UseGuards(AuthGuard("jwt"))
+  @Get("/")
   @ApiResponse({ status: 200, description: "List of users", type: [User] })
   findAll() {
     return this.usersService.findAll();
   }
+
   @Post()
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
@@ -49,6 +52,8 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Get("/:id")
+  @UseGuards(IdValidationMiddleware)
   @ApiParam({ name: "id", type: String })
   @ApiResponse({
     status: 200,
@@ -56,12 +61,12 @@ export class UsersController {
     type: User,
   })
   @ApiResponse({ status: 404, description: "User not found" })
-  @Get("/:id")
-  findOne(@Param("id") id: ObjectId) {
+  findOne(@Param("id") id: string) {
     return this.usersService.findByID(id);
   }
 
   @Patch(":id")
+  @UseGuards(IdValidationMiddleware)
   @ApiParam({ name: "id", type: String })
   @ApiBody({ type: UpdateUserDto })
   @ApiResponse({
@@ -69,15 +74,16 @@ export class UsersController {
     type: User,
   })
   @ApiResponse({ status: 404, description: "User not found" })
-  update(@Param("id") id: ObjectId, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(":id")
+  @UseGuards(IdValidationMiddleware)
   @ApiParam({ name: "id", type: String })
   @ApiResponse({ status: 200, description: "User deleted successfully" })
   @ApiResponse({ status: 404, description: "User not found" })
-  remove(@Param("id") id: ObjectId) {
+  remove(@Param("id") id: string) {
     return this.usersService.delete(id);
   }
 }

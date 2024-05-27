@@ -3,7 +3,7 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { User, UserDocument } from "./schemas/user.schema";
-import { Model, ObjectId, Types } from "mongoose";
+import { Model } from "mongoose";
 import * as bcrypt from "bcrypt";
 
 @Injectable()
@@ -29,31 +29,28 @@ export class UsersService {
     });
   }
   async findAll(): Promise<User[]> {
-    return await this.userModel.find().select("-password").exec();
+    return await this.userModel.find().select("-password");
   }
 
-  async findByID(id: ObjectId): Promise<User> {
-    return await this.userModel.findById(id).select("-password").exec();
+  async findByID(id: string): Promise<User> {
+    return await this.userModel.findById(id).select("-password");
   }
 
   async findByIds(ids: string[]): Promise<User[]> {
-    const objectIds = ids.map((id) => new Types.ObjectId(id));
+    const users = await this.userModel.find({ _id: { $in: ids } });
 
-    const users = await this.userModel.find({ _id: { $in: objectIds } });
-
-    console.log("here", users);
     return users;
   }
   async findOneByEmail(email: string): Promise<User | undefined> {
     return this.userModel.findOne({ email });
   }
-  async update(id: ObjectId, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     return await this.userModel.findByIdAndUpdate(id, updateUserDto, {
       select: "-password",
     });
   }
 
-  async delete(id: ObjectId) {
+  async delete(id: string) {
     return await this.userModel.findByIdAndDelete(id).select("-password");
   }
 }

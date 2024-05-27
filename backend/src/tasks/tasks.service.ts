@@ -6,6 +6,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Task, TaskDocument } from "./schemas/task.schema";
 import { Model, ObjectId } from "mongoose";
 import { UsersService } from "src/users/users.service";
+import { PaginatedResult } from "src/common/interfaces/paginated-result.interface";
 
 @Injectable()
 export class TasksService {
@@ -19,15 +20,36 @@ export class TasksService {
     const createdTask = new this.taskModel(createTaskDto);
     return createdTask.save();
   }
-  async findAll(): Promise<Task[]> {
-    return await this.taskModel.find().exec();
+  async findAll(
+    status?: string,
+    page?: number,
+    limit?: number
+  ): Promise<{ total: number; result: Task[] }> {
+    const query = this.taskModel.find();
+
+    if (status) {
+      query.where({ status });
+    }
+
+    const total = await this.taskModel.countDocuments(query.getQuery());
+    const result = await query
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+
+    return {
+      total,
+      result,
+    };
   }
 
   async findByID(id: string): Promise<Task> {
-    return await this.taskModel.findById(id).exec();
+    return await this.taskModel.findById(id);
   }
 
   async update(id: ObjectId, updateTaskDto: UpdateTaskDto) {
+    console.log(updateTaskDto);
+
     return await this.taskModel.findByIdAndUpdate(id, updateTaskDto);
   }
 
@@ -51,15 +73,12 @@ export class TasksService {
       });
     }
 
-    const users = await this.userService.findByIds(userIds);
+    const users: any = await this.userService.findByIds(userIds);
 
     const missingUsers = userIds.filter(
-      (id) =>
-        !users.some((user) => {
-          console.log("user", user);
-          user._id === id;
-        })
+      (id) => !users.some((user) => user._id.toString() === id)
     );
+
     if (missingUsers.length > 0) {
       throw new NotFoundException({
         status: 404,

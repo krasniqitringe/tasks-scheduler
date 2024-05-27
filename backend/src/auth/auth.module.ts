@@ -5,10 +5,12 @@ import { AuthService } from "./auth.service";
 import { UsersModule } from "src/users/users.module";
 import { JwtStrategy } from "./jwt.strategy";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { PassportModule } from "@nestjs/passport";
 
 @Module({
   imports: [
     UsersModule,
+    PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({

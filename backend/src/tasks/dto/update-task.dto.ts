@@ -1,21 +1,28 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { TaskStatus } from '../schemas/task.schema';
+import { ApiProperty } from "@nestjs/swagger";
+import { TaskStatus } from "../schemas/task.schema";
+import { IsEnum, IsOptional, IsString, Validate } from "class-validator";
 
 export class UpdateTaskDto {
-  @ApiProperty({ example: 'Task Title', description: 'The title of the task' })
-  title: string;
+  @ApiProperty({ example: "Task Title", description: "The title of the task" })
+  @IsString()
+  @IsOptional()
+  title?: string;
 
   @ApiProperty({
-    example: 'Task description',
-    description: 'The description of the task',
+    example: "Task description",
+    description: "The description of the task",
   })
-  description: string;
+  @IsString()
+  @IsOptional()
+  description?: string;
 
   @ApiProperty({
-    example: 'to_do',
-    description: 'The status of the task',
+    example: "to_do",
+    description: "The status of the task",
     enum: TaskStatus,
     default: TaskStatus.TODO,
   })
-  status: TaskStatus;
+  @IsOptional()
+  @IsEnum(TaskStatus)
+  status?: TaskStatus;
 }
