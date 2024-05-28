@@ -1,5 +1,5 @@
 .task-wrapper {
-  background: $white;
+  background: var(--white);
   border-radius: 12px;
   padding: 24px 16px;
   margin-bottom: 14px;
@@ -10,26 +10,26 @@
     margin-bottom: 15px;
 
     .tag {
-      color: $white;
+      color: var(--white);
       font-size: 12px;
       font-weight: 500;
       padding: 4px 24px 4px 12px;
       border-radius: 4px;
 
       &.purple {
-        background: $royal-blue;
+        background: var(--royal-blue);
       }
 
       &.blue {
-        background: $dodger-blue;
+        background: var(--dodger-blue);
       }
 
       &.yellow {
-        background: $buttercup;
+        background: var(--buttercup);
       }
 
       &.orange {
-        background: $burnt-sienna;
+        background: var(--burnt-sienna);
       }
     }
   }
@@ -43,24 +43,25 @@
   }
 
   h4 {
-    color: $port-gore;
+    color: var(--port-gore);
     font-size: 13px;
     font-weight: 500;
     margin: 0 0 8px 0;
   }
 
   p {
-    color: $slate-gray;
+    color: var(--slate-gray);
     font-size: 12px;
     font-weight: 500;
     margin: 0 0 14px 0;
 
     &.date {
       border-radius: 4px;
-      border: 1px solid $mercury;
-      color: $port-gore;
+      border: 1px solid var(--mercury);
+      color: var(--port-gore);
       padding: 4px 8px;
       margin: 0 0 18px 0;
+      display: inline-block;
     }
   }
 
@@ -79,7 +80,7 @@
         border-radius: 50%;
         object-fit: cover;
         object-position: center center;
-        border: 1px solid $white;
+        border: 1px solid var(--white);
         margin-left: -5px;
       }
     }
@@ -90,7 +91,7 @@
       gap: 10px;
 
       span {
-        color: $slate-gray;
+        color: var(--slate-gray);
         font-size: 12px;
         font-weight: 700;
       }
@@ -103,7 +104,7 @@
       gap: 5px;
 
       span {
-        color: $slate-gray;
+        color: var(--slate-gray);
         font-size: 10px;
         font-weight: 500;
       }

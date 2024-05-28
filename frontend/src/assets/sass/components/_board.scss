@@ -1,12 +1,17 @@
 .board-wrapper {
-  overflow: auto;
+  overflow: hidden;
 
-  &::-webkit-scrollbar {
-    display: none;
+  .board-task-wrapper {
+    overflow: auto;
+    height: 100%;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .board-header {
-    background-color: $white;
+    background-color: var(--white);
     padding: 10px 20px;
     display: flex;
     justify-content: space-between;
@@ -15,7 +20,7 @@
     border-radius: 10px;
 
     p {
-      color: $port-gore;
+      color: var(--port-gore);
       font-size: 17px;
       font-weight: 500;
       margin: 0;
@@ -32,15 +37,15 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: $titan-white;
+        background-color: var(--titan-white);
         border-radius: 7px;
         transition: all 0.3s;
 
         &:hover {
-          background-color: $cornflower-blue;
+          background-color: var(--cornflower-blue);
 
           svg rect {
-            fill: $titan-white;
+            fill: var(--titan-white);
           }
         }
       }

@@ -1,4 +1,4 @@
-.task-wrapper {
+.task-container {
   .title-wrapper {
     display: flex;
     justify-content: space-between;
@@ -8,6 +8,6 @@
   .boards-wrapper {
     display: flex;
     gap: 16px;
-    max-height: calc(100vh - 188px);
+    max-height: calc(100vh - 215px);
   }
 }

@@ -1,19 +1,39 @@
 // Body
-$white: #ffffff;
-$catskill-white: #f3f7fa;
-$magnolia: #fbfaff;
-$athens-gray: #f3f4f8;
-$mercury: #e2e2e2;
-$iron: #d9dade;
-$titan-white: #e8eaff;
-$slate-gray: #768396;
-$black: #000000;
-$royal-blue: #5051f9;
-$cornflower-blue: #6772fe;
-$port-gore: #23235f;
-$dodger-blue: #1ea7ff;
-$buttercup: #f59e0b;
-$burnt-sienna: #e97342;
+:root {
+    --white: #ffffff;
+    --catskill-white: #f3f7fa;
+    --magnolia: #fbfaff;
+    --athens-gray: #f3f4f8;
+    --mercury: #e2e2e2;
+    --iron: #d9dade;
+    --titan-white: #e8eaff;
+    --slate-gray: #768396;
+    --black: #000000;
+    --royal-blue: #5051f9;
+    --cornflower-blue: #6772fe;
+    --port-gore: #23235f;
+    --dodger-blue: #1ea7ff;
+    --buttercup: #f59e0b;
+    --burnt-sienna: #e97342;
+}
+
+body.dark {
+    --white: #1E1F25;
+    --catskill-white: #f3f7fa;
+    --magnolia: #1E1F25;
+    --athens-gray: #131517;
+    --mercury: #e2e2e2;
+    --iron: #d9dade;
+    --titan-white: #e8eaff;
+    --slate-gray: #768396;
+    --black: #000000;
+    --royal-blue: #5051f9;
+    --cornflower-blue: #6772fe;
+    --port-gore: #F6F6F6;
+    --dodger-blue: #1ea7ff;
+    --buttercup: #f59e0b;
+    --burnt-sienna: #e97342;
+}
 
 // Fonts
 

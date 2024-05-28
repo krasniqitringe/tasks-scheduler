@@ -1,41 +1,42 @@
 .container {
-  background-color: $athens-gray;
+  background-color: var(--athens-gray);
   padding: 30px 40px;
   min-height: calc(100vh - 82px);
+  margin-bottom: 0;
 }
 
 .title {
-  color: $port-gore;
+  color: var(--port-gore);
   font-size: 30px;
   font-weight: 500;
   margin: 0;
 }
 
 .btn {
-  color: $white;
+  color: var(--white);
   font-size: 14px;
   font-weight: 700;
   border-radius: 8px;
-  background: $royal-blue;
-  border: 2px solid $royal-blue;
+  background: var(--royal-blue);
+  border: 2px solid var(--royal-blue);
   padding: 10px 16px;
   display: inline-block;
   transition: all 0.3s;
 
   &:hover {
-    background-color: $white;
-    color: $royal-blue;
+    background-color: var(--white);
+    color: var(--royal-blue);
   }
 
   &.btn-secondary {
-    color: $black;
+    color: var(--black);
     font-weight: 500;
-    border-color: $iron;
+    border-color: var(--iron);
     background-color: transparent;
 
     &:hover {
-      background-color: $white;
-      color: $royal-blue;
+      background-color: var(--white);
+      color: var(--royal-blue);
     }
   }
 }

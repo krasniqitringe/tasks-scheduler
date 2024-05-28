@@ -8,7 +8,7 @@
   min-height: 100vh;
 
   .side-menu-wrapper {
-    background-color: $magnolia;
+    background-color: var(--magnolia);
     padding: 24px;
 
     ul.ant-menu {
@@ -36,11 +36,11 @@
 
         &.ant-menu-item-selected {
           border-radius: 14px;
-          background: $royal-blue;
-          box-shadow: 0px 8px 14px 0px rgba($royal-blue, 0.122);
+          background: var(--royal-blue);
+          box-shadow: 0px 8px 14px 0px rgba(var(--royal-blue), 0.122);
 
           svg path {
-            fill: $white;
+            fill: var(--white);
           }
         }
       }
@@ -54,17 +54,26 @@
   }
 
   label {
-    color: $port-gore;
+    color: var(--port-gore);
     font-size: 14px;
     font-weight: 500;
   }
 
   input {
     border-radius: 9px;
-    border: 1px solid $athens-gray;
-    color: $slate-gray;
+    border: 1px solid var(--athens-gray);
+    color: var(--slate-gray);
     font-size: 14px;
     font-weight: 500;
     padding: 13px 17px;
+  }
+
+  div.ant-upload {
+    background-color: var(--white);
+    color: var(--slate-gray);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 13px 17px;
+    border: 1px solid var(--athens-gray);
   }
 }

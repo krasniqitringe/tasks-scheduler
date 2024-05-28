@@ -18,27 +18,21 @@ import {
   TimelineIcon,
 } from "@/assets/img";
 import AvatarImage from "@/assets/img/avatar.png";
+import { useTheme } from "@/context/themeContext";
 
 export default function Dashboard() {
   const location = useLocation();
+  const { theme, toggleTheme }: any = useTheme();
 
   const items: MenuProps["items"] = [
     {
-      label: <a href="https://www.antgroup.com">1st menu item</a>,
+      label: <span onClick={() => toggleTheme('light')}>Toggle Theme</span>,
       key: "0",
-    },
-    {
-      label: <a href="https://www.aliyun.com">2nd menu item</a>,
-      key: "1",
-    },
-    {
-      label: "3rd menu item",
-      key: "3",
-    },
+    }
   ];
 
   return (
-    <Layout className="page-wrapper">
+    <Layout className={`page-wrapper ${theme}`}>
       <Sider
         width={94}
         theme="light"
@@ -101,4 +95,4 @@ export default function Dashboard() {
       </Layout>
     </Layout>
   );
-}
+};

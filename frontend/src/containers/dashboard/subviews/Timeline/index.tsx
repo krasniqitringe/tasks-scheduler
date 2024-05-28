@@ -1,3 +1,5 @@
-export default function Timeline() {
-  return <div>Timeline</div>;
-}
+const Timeline = () => {
+  return <div> Timeline</div>;
+};
+
+export default Timeline;

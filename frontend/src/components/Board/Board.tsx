@@ -1,9 +1,4 @@
-import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable,
-} from "@hello-pangea/dnd";
+import { DragDropContext, DropResult, Droppable } from "@hello-pangea/dnd";
 import TaskItem from "../Task/TaskItem";
 import { useState } from "react";
 import { DotsIcon, PlusIcon } from "@/assets/img";
@@ -84,7 +79,7 @@ export default function Board({ title }: BoardTypes) {
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
-      <Droppable droppableId="boards">
+      <Droppable droppableId="boards" isCombineEnabled>
         {(provided) => (
           <div
             className="board-wrapper"
@@ -103,46 +98,41 @@ export default function Board({ title }: BoardTypes) {
                 </a>
               </div>
             </div>
-            {board.map(
-              (
-                {
-                  id,
-                  image,
-                  title,
-                  subtitle,
-                  date,
-                  multipleTask,
-                  attachments,
-                  comments,
-                  tags,
-                },
-                index
-              ) => {
-                return (
-                  <Draggable key={id} draggableId={id} index={index}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <TaskItem
-                          image={image}
-                          title={title}
-                          subtitle={subtitle}
-                          date={date}
-                          multipleTask={multipleTask}
-                          tags={tags}
-                          attachments={attachments}
-                          comments={comments}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                );
-              }
-            )}
-            {provided.placeholder}
+
+            <div className="board-task-wrapper">
+              {board.map(
+                (
+                  {
+                    id,
+                    image,
+                    title,
+                    subtitle,
+                    date,
+                    multipleTask,
+                    attachments,
+                    comments,
+                    tags,
+                  },
+                  index
+                ) => {
+                  return (
+                    <TaskItem
+                      image={image}
+                      title={title}
+                      subtitle={subtitle}
+                      date={date}
+                      multipleTask={multipleTask}
+                      tags={tags}
+                      attachments={attachments}
+                      comments={comments}
+                      id={id}
+                      index={index}
+                    />
+                  );
+                }
+              )}
+              {provided.placeholder}
+            </div>
           </div>
         )}
       </Droppable>
