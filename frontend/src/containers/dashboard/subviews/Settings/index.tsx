@@ -1,9 +1,11 @@
 import {
+  Button,
   Col,
   Form,
   Image,
   Input,
   Row,
+  Spin,
   Tabs,
   TabsProps,
   Upload,
@@ -13,13 +15,27 @@ import settignsBackground from "@/assets/img/settingsBackground.png";
 import profile from "@/assets/img/profile.png";
 import type { UploadProps } from "antd";
 import { UploadIcon } from "@/assets/img";
+import { UserState, useUser } from "@/context/usersContext";
+import { useEffect } from "react";
 
 export default function Settings() {
   const [form] = Form.useForm();
   const { Dragger } = Upload;
+  const { user, fetchUserById, updateUser, loading }: any = useUser();
+  const userId = localStorage.getItem("userId");
 
-  const onFinish = () => {
-    console.log("on form finish");
+  useEffect(() => {
+    fetchUserById(userId);
+  }, []);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      ...user,
+    });
+  }, [user]);
+
+  const onFinish = (values: UserState) => {
+    updateUser(userId, values);
   };
 
   const uploadProps: UploadProps = {
@@ -46,26 +62,23 @@ export default function Settings() {
     {
       key: "1",
       label: "My details",
-      children: (
+      children: loading ? (
+        <Spin />
+      ) : (
         <Row gutter={24}>
           <Col xs={24} lg={12}>
-            <Form.Item name="firstName" label="First name">
+            <Form.Item name="firstname" label="First name">
               <Input placeholder="Please enter the first name" />
             </Form.Item>
           </Col>
           <Col xs={24} lg={12}>
-            <Form.Item name="lastName" label="Last name">
+            <Form.Item name="lastname" label="Last name">
               <Input placeholder="Please enter the last name" />
             </Form.Item>
           </Col>
           <Col lg={24}>
             <Form.Item name="email" label="Email">
               <Input placeholder="Please enter the email" />
-            </Form.Item>
-          </Col>
-          <Col lg={24}>
-            <Form.Item name="password" label="Password">
-              <Input placeholder="Please enter your password" />
             </Form.Item>
           </Col>
           <Col lg={24}>
@@ -134,25 +147,6 @@ export default function Settings() {
         alt="abstract background"
         className="settings-background"
       />
-      <div className="settings-header">
-        <div className="settings-title">
-          <Image
-            preview={false}
-            src={profile}
-            alt="abstract background"
-            className="profile-background"
-          />
-          <h3 className="title">Settings</h3>
-        </div>
-        <div className="actions-wrapper">
-          <a href="#" className="btn btn-secondary">
-            Cancel
-          </a>
-          <a href="#" className="btn">
-            Save
-          </a>
-        </div>
-      </div>
       <Form
         form={form}
         name="normal_login"
@@ -160,6 +154,23 @@ export default function Settings() {
         onFinish={onFinish}
         layout="vertical"
       >
+        <div className="settings-header">
+          <div className="settings-title">
+            <Image
+              preview={false}
+              src={profile}
+              alt="abstract background"
+              className="profile-background"
+            />
+            <h3 className="title">Settings</h3>
+          </div>
+          <div className="actions-wrapper">
+            <Button className="btn btn-secondary">Cancel</Button>
+            <Button htmlType="submit" className="btn">
+              Submit
+            </Button>
+          </div>
+        </div>
         <Tabs defaultActiveKey="1" items={items} />
       </Form>
     </div>

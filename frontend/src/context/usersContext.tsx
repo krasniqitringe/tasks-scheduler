@@ -1,10 +1,10 @@
-import React, { createContext, useState, useEffect } from "react";
-import axios from "axios";
-import { BASE_URL } from "@/config/baseURL";
+import React, { createContext, useState } from "react";
+import api from "@/config/api";
+import { notification } from "antd";
 
 const UserContext = createContext({});
 
-interface UserState {
+export interface UserState {
   firstname: string;
   lastname: string;
   email: string;
@@ -15,31 +15,34 @@ interface UserState {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const UserProvider = ({ children }: any) => {
+  const [users, setUsers] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/users`);
-        setUser(response.data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchUsers = async () => {
+    try {
+      const response = await api("/users", "GET");
 
-    fetchUsers();
-  }, []);
+      setUsers(response.data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const createUser = async (user: UserState) => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${BASE_URL}/users/`, user);
-      setUser(response.data);
+      await api("/users", "POST", user);
+      await fetchUsers();
+
+      notification.success({
+        message: "Success",
+        description: "User created successfully!",
+      });
     } catch (err) {
       setError(err);
     } finally {
@@ -50,8 +53,13 @@ export const UserProvider = ({ children }: any) => {
   const updateUser = async (id: string, user: UserState) => {
     setLoading(true);
     try {
-      const response = await axios.patch(`${BASE_URL}/users/${id}`, user);
-      setUser(response.data);
+      await api(`/users/${id}`, "PATCH", user);
+      await fetchUsers();
+
+      notification.success({
+        message: "Success",
+        description: "User updated successfully!",
+      });
     } catch (err) {
       setError(err);
     } finally {
@@ -62,8 +70,13 @@ export const UserProvider = ({ children }: any) => {
   const deleteUser = async (id: string) => {
     setLoading(true);
     try {
-      const response = await axios.delete(`${BASE_URL}/users/${id}`);
-      setUser(response.data);
+      await api(`/users/${id}`, "DELETE");
+      await fetchUsers();
+
+      notification.success({
+        message: "Success",
+        description: "User deleted successfully!",
+      });
     } catch (err) {
       setError(err);
     } finally {
@@ -74,7 +87,7 @@ export const UserProvider = ({ children }: any) => {
   const fetchUserById = async (id: string) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${BASE_URL}/users/${id}`);
+      const response = await api(`/users/${id}`, "GET");
       setUser(response.data);
     } catch (err) {
       setError(err);
@@ -87,8 +100,10 @@ export const UserProvider = ({ children }: any) => {
     <UserContext.Provider
       value={{
         user,
+        users,
         loading,
         error,
+        fetchUsers,
         createUser,
         updateUser,
         deleteUser,

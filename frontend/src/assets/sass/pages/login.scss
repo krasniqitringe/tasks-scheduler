@@ -1,0 +1,21 @@
+.login-container {
+  display: flex;
+
+  img {
+    width: 50%;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+
+  .form-wrapper {
+    padding: 30px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .login-form {
+      min-width: 100%;
+    }
+  }
+}

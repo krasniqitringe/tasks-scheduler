@@ -6,42 +6,49 @@ import {
   UseFilters,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { ApiTags, ApiOperation, ApiBody, ApiResponse } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { ResponseInterceptor } from "src/common/interceptors/response.interceptor";
 import { AllExceptionsFilter } from "src/common/filters/all-exceptions.filter";
+import { SignInDto } from "./dto/sign-in.dto";
+import { SignInResponseDto } from "./dto/sign-in-response.dto";
+import { CreateUserDto } from "src/users/dto/create-user.dto";
+import { UsersService } from "src/users/users.service";
+import { User } from "src/users/schemas/user.schema";
 
 @ApiTags("auth")
 @Controller("auth")
 @UseInterceptors(ResponseInterceptor)
 @UseFilters(AllExceptionsFilter)
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService
+  ) {}
   @Post("signin")
   @ApiOperation({ summary: "Sign in user and return a token" })
-  @ApiBody({
-    schema: {
-      type: "object",
-      properties: {
-        email: { type: "string", example: "user@example.com" },
-        password: { type: "string", example: "password123" },
-      },
-    },
-  })
   @ApiResponse({
     status: 200,
     description: "Successful sign-in",
-    schema: {
-      type: "object",
-      properties: {
-        token: { type: "string", example: "jwt.token.here" },
-      },
-    },
+    type: SignInResponseDto,
   })
   @ApiResponse({ status: 401, description: "Invalid credentials" })
-  async signIn(
-    @Body("email") email: string,
-    @Body("password") password: string
-  ) {
-    return { token: await this.authService.signIn(email, password) };
+  async signIn(@Body() signInDto: SignInDto): Promise<SignInResponseDto> {
+    const token = await this.authService.signIn(
+      signInDto.email,
+      signInDto.password
+    );
+    return { token };
+  }
+
+  @Post("signup")
+  @ApiOperation({ summary: "Sign up user " })
+  @ApiResponse({
+    status: 200,
+    description: "Successful sign-up",
+    type: User,
+  })
+  @ApiResponse({ status: 400, description: "Invalid input data" })
+  async signup(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
   }
 }

@@ -41,4 +41,28 @@
       margin-top: 20px;
     }
   }
+
+  .ant-tabs {
+    &.ant-tabs-top > .ant-tabs-nav::before {
+      display: none;
+    }
+
+    .ant-tabs-ink-bar {
+      display: none;
+    }
+
+    .ant-tabs-tab {
+      .ant-tabs-tab-btn {
+        color: var(--pale-sky);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      &.ant-tabs-tab-active {
+        .ant-tabs-tab-btn {
+          color: var(--port-gore);
+        }
+      }
+    }
+  }
 }

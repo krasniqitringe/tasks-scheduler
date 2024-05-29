@@ -1,6 +1,6 @@
 import { createContext, useState, useContext } from "react";
-import axios from "axios";
-import { BASE_URL } from "@/config/baseURL";
+import api from "@/config/api";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext({});
 
@@ -16,8 +16,20 @@ export const AuthProvider = ({ children }: any) => {
 
   const login = async (credentials: LoginState) => {
     try {
-      const response = await axios.post(`${BASE_URL}/auth/signin`, credentials);
-      setUser(response.data.user);
+      const response = await api("/auth/signin", "POST", credentials);
+      const tokenData = jwtDecode(response.data.token) as JwtPayload;
+
+      localStorage.setItem("authToken", response.data.token);
+      localStorage.setItem("userId", tokenData?.userId);
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+  const register = async (credentials: LoginState) => {
+    try {
+      const response = await api("/auth/register", "POST", credentials);
+
       localStorage.setItem("authToken", response.data.token);
     } catch (err) {
       setError(err);
@@ -30,7 +42,7 @@ export const AuthProvider = ({ children }: any) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, error, login, logout }}>
+    <AuthContext.Provider value={{ user, error, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,6 +1,5 @@
-import React, { createContext, useState, useEffect } from "react";
-import axios from "axios";
-import { BASE_URL } from "@/config/baseURL";
+import React, { createContext, useState } from "react";
+import api from "@/config/api";
 
 const TaskContext = createContext({});
 
@@ -23,26 +22,24 @@ export const TaskProvider = ({ children }: any) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/tasks`);
-        setTask(response.data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchTasks = async () => {
+    try {
+      const response = await api(`/tasks`, "GET");
 
-    fetchTasks();
-  }, []);
+      setTask(response.data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const createTask = async (task: TaskState) => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${BASE_URL}/tasks/`, task);
+      const response = await api(`/tasks`, "POST", task);
+      await fetchTasks();
       setTask(response.data);
     } catch (err) {
       setError(err);
@@ -54,7 +51,8 @@ export const TaskProvider = ({ children }: any) => {
   const updateTask = async (id: string, task: TaskState) => {
     setLoading(true);
     try {
-      const response = await axios.put(`${BASE_URL}/tasks/${id}`, task);
+      const response = await api(`/tasks/${id}`, "PUT", task);
+      await fetchTasks();
       setTask(response.data);
     } catch (err) {
       setError(err);
@@ -66,7 +64,8 @@ export const TaskProvider = ({ children }: any) => {
   const deleteTask = async (id: string) => {
     setLoading(true);
     try {
-      const response = await axios.delete(`${BASE_URL}/tasks/${id}`);
+      const response = await api(`/tasks/${id}`, "DELETE");
+      await fetchTasks();
       setTask(response.data);
     } catch (err) {
       setError(err);
@@ -78,7 +77,7 @@ export const TaskProvider = ({ children }: any) => {
   const fetchTaskById = async (id: string) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${BASE_URL}/tasks/${id}`);
+      const response = await api(`/tasks/${id}`, "GET");
       setTask(response.data);
     } catch (err) {
       setError(err);
@@ -90,10 +89,7 @@ export const TaskProvider = ({ children }: any) => {
   const updateTaskAssignees = async (id: string, assignees: AssigneeState) => {
     setLoading(true);
     try {
-      const response = await axios.put(
-        `${BASE_URL}/tasks/${id}/assignees`,
-        assignees
-      );
+      const response = await api(`/tasks/${id}/assignees`, "PUT", assignees);
       setTask(response.data);
     } catch (err) {
       setError(err);
@@ -108,6 +104,7 @@ export const TaskProvider = ({ children }: any) => {
         task,
         loading,
         error,
+        fetchTasks,
         createTask,
         updateTask,
         deleteTask,

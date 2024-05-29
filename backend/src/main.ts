@@ -14,7 +14,7 @@ import { SeedDataService } from "./common/providers/seed-data.service";
 async function bootstrap() {
   dotenv.config();
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
 
   app.use(helmet());
   app.use(cookieParser());

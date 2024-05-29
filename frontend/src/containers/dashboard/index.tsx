@@ -1,7 +1,13 @@
 import { Avatar, Dropdown, Image, Input, Layout, Menu, MenuProps } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
-import { Link, Route, Routes, useLocation } from "react-router-dom";
+import {
+  Link,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 // Components
 import Task from "@/containers/dashboard/subviews/Task";
 import Timeline from "@/containers/dashboard/subviews/Timeline";
@@ -18,17 +24,31 @@ import {
   TimelineIcon,
 } from "@/assets/img";
 import AvatarImage from "@/assets/img/avatar.png";
+// Context
 import { useTheme } from "@/context/themeContext";
+import { useAuth } from "@/context/authContext";
 
 export default function Dashboard() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme, toggleTheme }: any = useTheme();
+  const { logout }: any = useAuth();
+
+  const onLogout = () => {
+    logout();
+
+    navigate("/login");
+  };
 
   const items: MenuProps["items"] = [
     {
-      label: <span onClick={() => toggleTheme('light')}>Toggle Theme</span>,
+      label: <span onClick={() => toggleTheme()}>Toggle Theme</span>,
       key: "0",
-    }
+    },
+    {
+      label: <span onClick={onLogout}>Logout</span>,
+      key: "1",
+    },
   ];
 
   return (
@@ -95,4 +115,4 @@ export default function Dashboard() {
       </Layout>
     </Layout>
   );
-};
+}

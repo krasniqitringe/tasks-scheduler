@@ -10,12 +10,12 @@ interface LoginState {
 export default function Login() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const { login }: any = useAuth();
+  const { register }: any = useAuth();
 
   const onFinish = (values: LoginState) => {
-    login(values);
+    register(values);
 
-    navigate("/");
+    navigate("/login");
   };
 
   return (
@@ -30,7 +30,13 @@ export default function Login() {
           onFinish={onFinish}
           layout="vertical"
         >
-          <h1>Login Form</h1>
+          <h1>Register Form</h1>
+          <Form.Item name="firstname" label="First name">
+            <Input placeholder="Please enter the email" />
+          </Form.Item>
+          <Form.Item name="lastname" label="Last name">
+            <Input placeholder="Please enter the email" />
+          </Form.Item>
           <Form.Item name="email" label="Email">
             <Input placeholder="Please enter the email" />
           </Form.Item>
