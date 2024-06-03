@@ -1,8 +1,10 @@
 # Project Name
 
+Tasks scheduler
+
 ## Overview
 
-Briefly describe the purpose and goals of the project.
+Backend of tasks scheduler small application
 
 ## Setup Instructions
 

@@ -10,9 +10,6 @@ import {
   UseFilters,
   UseGuards,
 } from "@nestjs/common";
-import { UsersService } from "./users.service";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
 import {
   ApiTags,
   ApiBody,
@@ -20,12 +17,22 @@ import {
   ApiBearerAuth,
   ApiParam,
 } from "@nestjs/swagger";
-import { User } from "./schemas/user.schema";
+import { AuthGuard } from "@nestjs/passport";
+
+//Common
 import { ResponseInterceptor } from "src/common/interceptors/response.interceptor";
 import { AllExceptionsFilter } from "src/common/filters/all-exceptions.filter";
-import { AuthGuard } from "@nestjs/passport";
-import { InjectModel } from "@nestjs/mongoose";
 import { IdValidationMiddleware } from "src/common/middlewares/guard.middleware";
+
+//Dtos
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+
+//Schemas
+import { User } from "./schemas/user.schema";
+
+//Services
+import { UsersService } from "./users.service";
 
 @ApiTags("users")
 @Controller("users")

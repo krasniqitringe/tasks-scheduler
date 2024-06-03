@@ -5,15 +5,22 @@ import {
   UseInterceptors,
   UseFilters,
 } from "@nestjs/common";
-import { AuthService } from "./auth.service";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
+
+//Common
 import { ResponseInterceptor } from "src/common/interceptors/response.interceptor";
 import { AllExceptionsFilter } from "src/common/filters/all-exceptions.filter";
+//Schemas
+import { User } from "src/users/schemas/user.schema";
+
+//Dtos
+import { CreateUserDto } from "src/users/dto/create-user.dto";
 import { SignInDto } from "./dto/sign-in.dto";
 import { SignInResponseDto } from "./dto/sign-in-response.dto";
-import { CreateUserDto } from "src/users/dto/create-user.dto";
+
+//Services
+import { AuthService } from "./auth.service";
 import { UsersService } from "src/users/users.service";
-import { User } from "src/users/schemas/user.schema";
 
 @ApiTags("auth")
 @Controller("auth")

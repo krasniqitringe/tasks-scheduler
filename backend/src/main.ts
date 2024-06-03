@@ -7,6 +7,8 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { ValidationPipe } from "@nestjs/common";
 import * as cookieParser from "cookie-parser";
+
+//Common
 import { ResponseInterceptor } from "./common/interceptors/response.interceptor";
 import { AllExceptionsFilter } from "./common/filters/all-exceptions.filter";
 import { SeedDataService } from "./common/providers/seed-data.service";
@@ -50,6 +52,6 @@ async function bootstrap() {
 
   await seedDataService.seedIfNoUsersExist();
 
-  await app.listen(3000);
+  await app.listen(5001);
 }
 bootstrap();
