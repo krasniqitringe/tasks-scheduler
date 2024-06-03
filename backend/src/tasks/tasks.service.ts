@@ -48,8 +48,6 @@ export class TasksService {
   }
 
   async update(id: ObjectId, updateTaskDto: UpdateTaskDto) {
-    console.log(updateTaskDto);
-
     return await this.taskModel.findByIdAndUpdate(id, updateTaskDto);
   }
 

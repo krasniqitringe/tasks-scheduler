@@ -1,5 +1,6 @@
 .board-wrapper {
   overflow: hidden;
+  width: 100%;
 
   .board-task-wrapper {
     overflow: auto;
@@ -32,12 +33,14 @@
       gap: 18px;
 
       .add-item {
+        padding: 0;
         width: 32px;
         height: 32px;
         display: flex;
         justify-content: center;
         align-items: center;
         background-color: var(--titan-white);
+        border: none;
         border-radius: 7px;
         transition: all 0.3s;
 
@@ -51,4 +54,8 @@
       }
     }
   }
+}
+
+.dark .actions-wrapper svg rect {
+  fill: white;
 }

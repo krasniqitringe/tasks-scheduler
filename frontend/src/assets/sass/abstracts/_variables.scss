@@ -1,15 +1,20 @@
 // Body
+$true-white: #ffffff;
+$true-black: #000000;
+
 :root {
   --white: #ffffff;
+  --black: #000000;
   --catskill-white: #f3f7fa;
   --magnolia: #fbfaff;
   --athens-gray: #f3f4f8;
   --mercury: #e2e2e2;
+  --regent-gray: #8c97a8;
   --iron: #d9dade;
   --titan-white: #e8eaff;
   --pale-sky: #6a7181;
   --slate-gray: #768396;
-  --black: #000000;
+  --cod-gray: #1e1e1e;
   --royal-blue: #5051f9;
   --cornflower-blue: #6772fe;
   --port-gore: #23235f;
@@ -20,17 +25,19 @@
 
 body.dark {
   --white: #1e1f25;
-  --catskill-white: #f3f7fa;
+  --black: #d9dade;
+  --catskill-white: #050505;
   --magnolia: #1e1f25;
   --athens-gray: #131517;
   --mercury: #e2e2e2;
+  --regent-gray: #8c97a8;
   --iron: #d9dade;
-  --titan-white: #e8eaff;
+  --titan-white: #4c5bfc;
   --pale-sky: #505664;
   --slate-gray: #768396;
-  --black: #000000;
+  --cod-gray: #e8eaff;
   --royal-blue: #5051f9;
-  --cornflower-blue: #6772fe;
+  --cornflower-blue: #e8eaff;
   --port-gore: #f6f6f6;
   --dodger-blue: #1ea7ff;
   --buttercup: #f59e0b;

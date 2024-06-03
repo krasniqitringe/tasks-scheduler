@@ -1,141 +1,222 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from "react";
 import { DragDropContext, DropResult, Droppable } from "@hello-pangea/dnd";
-import TaskItem from "../Task/TaskItem";
-import { useState } from "react";
+// Components
+import TaskItem, { TaskType } from "@/components/Task/TaskItem";
+import ModalComponent from "@/components/Modal/Modal";
+// Images
 import { DotsIcon, PlusIcon } from "@/assets/img";
+// Data
+import { Button, Spin } from "antd";
+import { useTask } from "@/context/taskContext";
+import { useUser } from "@/context/usersContext";
+import { columnsInitialState, distributeTasks } from "@/utils/distributeTasks";
 
-const dummyData = [
-  {
-    id: "0",
-    image: "/src/assets/img/settingsBackground.png",
-    title: "Create styleguide foundation",
-    subtitle: "Create content for peceland App",
-    date: "Aug 20, 2021",
-    multipleTask: [0, 6],
-    tags: ["Design"],
-    attachments: undefined,
-    comments: undefined,
-  },
-  {
-    id: "1",
-    title: "Copywriting Content",
-    subtitle: "Create content for peceland App",
-    date: "Aug 20, 2021",
-    multipleTask: [0, 8],
-    tags: ["Research"],
-    attachments: undefined,
-    comments: undefined,
-  },
-  {
-    id: "2",
-    image: "/src/assets/img/settingsBackground.png",
-    title: "Update requiment list",
-    subtitle: "Create content for peceland App",
-    date: "Sep 20, 2021",
-    multipleTask: undefined,
-    tags: ["Planning"],
-    attachments: 11,
-    comments: undefined,
-  },
-  {
-    id: "3",
-    image: "/src/assets/img/settingsBackground.png",
-    title: "Create styleguide foundation",
-    subtitle: "Create content for peceland App",
-    date: "Aug 20, 2021",
-    multipleTask: undefined,
-    tags: ["Content"],
-    attachments: undefined,
-    comments: 8,
-  },
-  {
-    id: "4",
-    image: "/src/assets/img/settingsBackground.png",
-    title: "Create styleguide foundation",
-    subtitle: "Create content for peceland App",
-    date: "Aug 20, 2021",
-    multipleTask: [0, 6],
-    tags: ["Content", "Design"],
-    attachments: undefined,
-    comments: undefined,
-  },
-];
+const Board = () => {
+  const {
+    loading,
+    createTask,
+    updateTask,
+    fetchTasks,
+    tasks,
+    deleteTask,
+    updateTaskAssignees,
+  }: any = useTask();
+  const { fetchUsers, users }: any = useUser();
+  const [columns, setColumns] = useState(columnsInitialState);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentTask, setCurrentTask] = useState<TaskType | null>();
 
-interface BoardTypes {
-  title: string;
-}
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchUsers();
+      const response = await fetchTasks();
+      distributeTasksFunction(response, true);
+    };
 
-export default function Board({ title }: BoardTypes) {
-  const [board, setBoard] = useState(dummyData);
+    fetchData();
+  }, []);
 
-  function handleOnDragEnd(result: DropResult) {
-    if (!result.destination) return;
+  const distributeTasksFunction = async (tasks: any, action?: boolean) => {
+    setColumns(distributeTasks(tasks, action));
+  };
 
-    const items = Array.from(board);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+  const showModal = (task?: TaskType) => {
+    setCurrentTask(task || null);
+    setIsModalOpen(true);
+  };
 
-    setBoard(items);
-  }
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = async () => {
+    if (currentTask) {
+      try {
+        await deleteTask(currentTask._id);
+        const response = await fetchTasks();
+
+        distributeTasksFunction(response, true);
+      } catch (error) {
+        console.error("Error deleting task or fetching tasks", error);
+      }
+    }
+    setCurrentTask(null);
+  };
+
+  const handleFormSubmit = async (data: TaskType) => {
+    if (currentTask) {
+      updateTask(currentTask._id, data);
+    } else {
+      createTask(data);
+      const response = await fetchTasks();
+      distributeTasksFunction(response, true);
+    }
+
+    setCurrentTask(null);
+  };
+
+  const handleFormAssignees = (id: string, item: [string]) => {
+    const userIds = [...item];
+    updateTaskAssignees(id, { userIds });
+  };
+
+  const onDragEnd = (result: DropResult, columns: any, setColumns: any) => {
+    const { destination, source } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    const sourceColumn = columns[source.droppableId];
+    const destColumn = columns[destination.droppableId];
+    const newColumns = { ...columns };
+
+    const sourceItems = Array.from(sourceColumn.items);
+    const destItems = Array.from(destColumn.items);
+
+    newColumns[source.droppableId] = {
+      ...sourceColumn,
+      items: sourceItems,
+    };
+
+    newColumns[destination.droppableId] = {
+      ...destColumn,
+      items: destItems,
+    };
+
+    const [removed] = newColumns[source.droppableId].items.splice(
+      source.index,
+      1
+    );
+
+    newColumns[destination.droppableId].items.splice(
+      destination.index,
+      0,
+      removed
+    );
+
+    updateTask(result.draggableId.replace("droppable", ""), {
+      status: destination.droppableId,
+    }).then(() => {
+      console.log("new columns---", newColumns);
+      setColumns(newColumns);
+    });
+  };
 
   return (
-    <DragDropContext onDragEnd={handleOnDragEnd}>
-      <Droppable droppableId="boards" isCombineEnabled>
-        {(provided) => (
-          <div
-            className="board-wrapper"
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            <div className="board-header">
-              <p>{title}</p>
+    <DragDropContext
+      onDragEnd={(result) => {
+        onDragEnd(result, columns, setColumns);
+      }}
+    >
+      <div className="boards-wrapper">
+        {loading ? (
+          <Spin />
+        ) : (
+          columns &&
+          Object.entries(columns).map(([columnId, column], index) => {
+            return (
+              <Droppable key={index} droppableId={columnId}>
+                {(provided) => (
+                  <div
+                    className="board-wrapper"
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    <div className="board-header">
+                      <p>{column.title} </p>
 
-              <div className="actions-wrapper">
-                <a href="#" className="settings">
-                  <DotsIcon />
-                </a>
-                <a href="#" className="add-item">
-                  <PlusIcon />
-                </a>
-              </div>
-            </div>
+                      <div className="actions-wrapper">
+                        <a href="#" className="settings">
+                          <DotsIcon />
+                        </a>
+                        <Button
+                          className="add-item"
+                          onClick={() => showModal()}
+                        >
+                          <PlusIcon />
+                        </Button>
+                      </div>
+                    </div>
 
-            <div className="board-task-wrapper">
-              {board.map(
-                (
-                  {
-                    id,
-                    image,
-                    title,
-                    subtitle,
-                    date,
-                    multipleTask,
-                    attachments,
-                    comments,
-                    tags,
-                  },
-                  index
-                ) => {
-                  return (
-                    <TaskItem
-                      image={image}
-                      title={title}
-                      subtitle={subtitle}
-                      date={date}
-                      multipleTask={multipleTask}
-                      tags={tags}
-                      attachments={attachments}
-                      comments={comments}
-                      id={id}
-                      index={index}
-                    />
-                  );
-                }
-              )}
-              {provided.placeholder}
-            </div>
-          </div>
+                    <div className="board-task-wrapper">
+                      {column.items.map(
+                        ({
+                          index,
+                          title,
+                          _id,
+                          description,
+                          startDate,
+                          dueDate,
+                          assignedTo,
+                          status,
+                        }: any) => (
+                          <>
+                            <TaskItem
+                              _id={_id}
+                              title={title}
+                              description={description}
+                              startDate={startDate}
+                              dueDate={dueDate}
+                              assignedTo={assignedTo}
+                              status={status}
+                              key={index}
+                              users={users}
+                              index={index}
+                              showModal={showModal}
+                            />
+                          </>
+                        )
+                      )}
+                    </div>
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            );
+          })
         )}
-      </Droppable>
+      </div>
+      <ModalComponent
+        loading={loading}
+        open={isModalOpen}
+        handleClose={handleCancel}
+        handleDelete={handleDelete}
+        onSubmit={handleFormSubmit}
+        onChangeAssignee={handleFormAssignees}
+        currentTask={currentTask}
+        users={users}
+      />
     </DragDropContext>
   );
-}
+};
+
+export default Board;

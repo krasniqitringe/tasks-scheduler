@@ -29,10 +29,14 @@
         display: flex;
         gap: 16px;
         margin: 0;
+
+        svg ellipse {
+          fill: var(--catskill-white);
+        }
       }
 
       span {
-        color: #1e1e1e;
+        color: var(--cod-gray);
         font-size: 22px;
         font-weight: 700;
       }

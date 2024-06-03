@@ -1,0 +1,30 @@
+.modal-wrapper {
+  .ant-picker {
+    width: 100%;
+  }
+
+  .ant-modal-content,
+  .ant-modal-title,
+  .ant-input,
+  .ant-picker,
+  .ant-select .ant-select-selector {
+    background-color: var(--magnolia);
+    color: var(--cod-gray);
+
+    input::placeholder,
+    &::placeholder,
+    .ant-select-selection-placeholder {
+      color: var(--cod-gray);
+    }
+
+    label {
+      color: var(--cod-gray);
+    }
+  }
+
+  .ant-modal-close-x {
+    svg path {
+      fill: var(--cod-gray);
+    }
+  }
+}

@@ -51,6 +51,41 @@ export default function Dashboard() {
     },
   ];
 
+  const MenuItems = [
+    {
+      label: (
+        <Link to="/">
+          <DashboardIcon />
+        </Link>
+      ),
+      key: "/",
+    },
+    {
+      label: (
+        <Link to="/timeline">
+          <TimelineIcon />
+        </Link>
+      ),
+      key: "/timeline",
+    },
+    {
+      label: (
+        <Link to="/task">
+          <TaskIcon />
+        </Link>
+      ),
+      key: "/task",
+    },
+    {
+      label: (
+        <Link to="/settings">
+          <SettingsIcon />
+        </Link>
+      ),
+      key: "/settings",
+    },
+  ];
+
   return (
     <Layout className={`page-wrapper ${theme}`}>
       <Sider
@@ -59,28 +94,12 @@ export default function Dashboard() {
         breakpoint="lg"
         className="side-menu-wrapper"
       >
-        <Menu mode="inline" theme="light" selectedKeys={[location.pathname]}>
-          <Menu.Item key="/">
-            <Link to="/">
-              <DashboardIcon />
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="/timeline">
-            <Link to="/timeline">
-              <TimelineIcon />
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="/task">
-            <Link to="/task">
-              <TaskIcon />
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="/settings">
-            <Link to="/settings">
-              <SettingsIcon />
-            </Link>
-          </Menu.Item>
-        </Menu>
+        <Menu
+          mode="inline"
+          theme="light"
+          selectedKeys={[location.pathname]}
+          items={MenuItems}
+        />
       </Sider>
       <Layout>
         <Header className="header-wrapper">

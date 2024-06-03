@@ -16,10 +16,11 @@ import Login from "@/containers/authentication/Login";
 import Register from "@/containers/authentication/Register";
 
 // State
+import { useAuth } from "@/context/authContext";
 
 const Navigation: React.FC = () => {
+  const { token }: any = useAuth();
   const [, contextHolder] = notification.useNotification();
-  const isAuthenticated = localStorage.getItem("authToken");
 
   return (
     <>
@@ -31,9 +32,7 @@ const Navigation: React.FC = () => {
             <Route path="/register" element={<Register />} />
             <Route
               path="/*"
-              element={
-                isAuthenticated ? <Dashboard /> : <Navigate to="/login" />
-              }
+              element={token ? <Dashboard /> : <Navigate to="/login" />}
             />
 
             <Route path="*" element={<NotFound />} />

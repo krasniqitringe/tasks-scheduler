@@ -9,6 +9,7 @@ import {
   IsString,
 } from "class-validator";
 import mongoose from "mongoose";
+import { Type } from "class-transformer";
 
 export class CreateTaskDto {
   @ApiProperty({ example: "Task Title", description: "The title of the task" })
@@ -31,6 +32,7 @@ export class CreateTaskDto {
   })
   @IsOptional()
   @IsDate()
+  @Type(() => Date)
   startDate: Date;
 
   @ApiProperty({
@@ -40,6 +42,7 @@ export class CreateTaskDto {
   })
   @IsDate()
   @IsOptional()
+  @Type(() => Date)
   dueDate: Date;
 
   @ApiProperty({

@@ -18,15 +18,16 @@ interface AssigneeState {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const TaskProvider = ({ children }: any) => {
-  const [task, setTask] = useState(null);
+  const [taskById, setTaskById] = useState(null);
+  const [tasks, setTasks] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
 
   const fetchTasks = async () => {
     try {
       const response = await api(`/tasks`, "GET");
-
-      setTask(response.data);
+      setTasks(response.data.data);
+      return response?.data?.data || [];
     } catch (err) {
       setError(err);
     } finally {
@@ -38,9 +39,8 @@ export const TaskProvider = ({ children }: any) => {
     setLoading(true);
 
     try {
-      const response = await api(`/tasks`, "POST", task);
+      await api(`/tasks`, "POST", task);
       await fetchTasks();
-      setTask(response.data);
     } catch (err) {
       setError(err);
     } finally {
@@ -51,9 +51,8 @@ export const TaskProvider = ({ children }: any) => {
   const updateTask = async (id: string, task: TaskState) => {
     setLoading(true);
     try {
-      const response = await api(`/tasks/${id}`, "PUT", task);
+      await api(`/tasks/${id}`, "PUT", task);
       await fetchTasks();
-      setTask(response.data);
     } catch (err) {
       setError(err);
     } finally {
@@ -64,9 +63,8 @@ export const TaskProvider = ({ children }: any) => {
   const deleteTask = async (id: string) => {
     setLoading(true);
     try {
-      const response = await api(`/tasks/${id}`, "DELETE");
+      await api(`/tasks/${id}`, "DELETE");
       await fetchTasks();
-      setTask(response.data);
     } catch (err) {
       setError(err);
     } finally {
@@ -78,7 +76,7 @@ export const TaskProvider = ({ children }: any) => {
     setLoading(true);
     try {
       const response = await api(`/tasks/${id}`, "GET");
-      setTask(response.data);
+      setTaskById(response.data.data);
     } catch (err) {
       setError(err);
     } finally {
@@ -89,8 +87,8 @@ export const TaskProvider = ({ children }: any) => {
   const updateTaskAssignees = async (id: string, assignees: AssigneeState) => {
     setLoading(true);
     try {
-      const response = await api(`/tasks/${id}/assignees`, "PUT", assignees);
-      setTask(response.data);
+      await api(`/tasks/${id}/assignees`, "PUT", assignees);
+      await fetchTasks();
     } catch (err) {
       setError(err);
     } finally {
@@ -101,7 +99,8 @@ export const TaskProvider = ({ children }: any) => {
   return (
     <TaskContext.Provider
       value={{
-        task,
+        taskById,
+        tasks,
         loading,
         error,
         fetchTasks,

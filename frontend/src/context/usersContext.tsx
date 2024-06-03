@@ -5,6 +5,7 @@ import { notification } from "antd";
 const UserContext = createContext({});
 
 export interface UserState {
+  _id?: string;
   firstname: string;
   lastname: string;
   email: string;

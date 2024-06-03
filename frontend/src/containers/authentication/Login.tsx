@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAuth } from "@/context/authContext";
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -13,9 +14,11 @@ export default function Login() {
   const { login }: any = useAuth();
 
   const onFinish = (values: LoginState) => {
-    login(values);
-
-    navigate("/");
+    login(values).then((response: any) => {
+      if (response.success) {
+        navigate("/");
+      }
+    });
   };
 
   return (

@@ -7,12 +7,7 @@ export default function Task() {
         <h3 className="title">🔥 Task</h3>
       </div>
 
-      <div className="boards-wrapper">
-        <Board title="Backlog" />
-        <Board title="To Do" />
-        <Board title="In Progress" />
-        <Board title="Review" />
-      </div>
+      <Board />
     </div>
   );
 }

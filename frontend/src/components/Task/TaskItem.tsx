@@ -1,106 +1,123 @@
-import { CheckboxIcon, CommentIcon, LinkIcon } from "@/assets/img";
+// import { CheckboxIcon, CommentIcon, LinkIcon } from "@/assets/img";
+import { UserState } from "@/context/usersContext";
 import { Draggable } from "@hello-pangea/dnd";
+import dayjs from "dayjs";
 
 interface TaskItemTypes {
-  image?: string;
+  index: number;
+  users: UserState;
+  _id?: string;
   title?: string;
+  description?: string;
+  startDate?: string;
+  dueDate?: string;
+  assignedTo?: string[];
+  status: string;
+  showModal: (task: TaskType) => void;
+}
+
+export interface TaskType {
+  id: string;
+  image?: string;
   subtitle?: string;
   date?: string;
   multipleTask?: Array<number>;
   attachments?: number;
   comments?: number;
   tags?: Array<string>;
-  id: string;
-  index: number;
+
+  _id: string;
+  title: string;
+  description: string;
+  startDate: string;
+  dueDate: string;
+  assignedTo: string[];
+  status: string;
 }
 
 export default function TaskItem({
-  image,
-  title,
-  subtitle,
-  date,
-  multipleTask,
-  attachments,
-  comments,
-  tags,
-  id,
   index,
+  _id,
+  title,
+  description,
+  startDate,
+  dueDate,
+  assignedTo,
+  status,
+  showModal,
 }: TaskItemTypes) {
   return (
-    <Draggable key={id} draggableId={id} index={index}>
+    <Draggable draggableId={_id as string} index={index}>
       {(provided) => (
         <div
-          className="task-wrapper"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          onClick={() =>
+            showModal({
+              _id: _id!,
+              title: title!,
+              description: description!,
+              startDate: startDate!,
+              dueDate: dueDate!,
+              assignedTo: assignedTo!,
+              status: status,
+            } as TaskType)
+          }
         >
-          <div className="tag-wrapper">
-            {tags?.map((item: string) => {
-              switch (item) {
-                case "Content":
-                  return <div className="tag yellow">{item}</div>;
-                case "Design":
-                  return <div className="tag purple">{item}</div>;
-                case "Research":
-                  return <div className="tag blue">{item}</div>;
-                case "Planning":
-                  return <div className="tag orange">{item}</div>;
+          <div className="task-wrapper">
+            {title && <h4>{title}</h4>}
+            {description && <p>{description}</p>}
+            {startDate && (
+              <p className="date">
+                {dayjs(startDate).format("MMMM D, YYYY")}
+                {dueDate && " - " + dayjs(dueDate).format("MMMM D, YYYY")}
+              </p>
+            )}
 
-                default:
-                  break;
-              }
-            })}
-          </div>
+            <div className="task-footer">
+              <div className="participants-wrapper">
+                <img
+                  src="/src/assets/img/participant-1.jpg"
+                  alt="task participant"
+                />
+                <img
+                  src="/src/assets/img/participant-2.jpg"
+                  alt="task participant"
+                />
+                <img
+                  src="/src/assets/img/participant-3.jpg"
+                  alt="task participant"
+                />
+              </div>
 
-          {image && <img src={image} alt="task image" />}
+              {/* {multipleTask && (
+                <div className="multiple-task">
+                  <CheckboxIcon />
+                  <span>
+                    {multipleTask[0]}/{multipleTask[1]}
+                  </span>
+                </div>
+              )}
 
-          {title && <h4>{title}</h4>}
-          {subtitle && <p>{subtitle}</p>}
-          {date && <p className="date">{date}</p>}
+              {attachments && (
+                <div className="attachment-wrapper">
+                  <LinkIcon />
+                  <span>
+                    {attachments == 1 ? "1 file" : `${attachments} files`}
+                  </span>
+                </div>
+              )}
 
-          <div className="task-footer">
-            <div className="participants-wrapper">
-              <img
-                src="/src/assets/img/participant-1.jpg"
-                alt="task participant"
-              />
-              <img
-                src="/src/assets/img/participant-2.jpg"
-                alt="task participant"
-              />
-              <img
-                src="/src/assets/img/participant-3.jpg"
-                alt="task participant"
-              />
+              {comments && (
+                <div className="comment-wrapper">
+                  <CommentIcon />
+                  <span>
+                    {comments == 1 ? "1 Comment" : `${comments} Comments`}
+                  </span>
+                </div>
+              )} */}
             </div>
-
-            {multipleTask && (
-              <div className="multiple-task">
-                <CheckboxIcon />
-                <span>
-                  {multipleTask[0]}/{multipleTask[1]}
-                </span>
-              </div>
-            )}
-
-            {attachments && (
-              <div className="attachment-wrapper">
-                <LinkIcon />
-                <span>
-                  {attachments == 1 ? "1 file" : `${attachments} files`}
-                </span>
-              </div>
-            )}
-
-            {comments && (
-              <div className="comment-wrapper">
-                <CommentIcon />
-                <span>
-                  {comments == 1 ? "1 Comment" : `${comments} Comments`}
-                </span>
-              </div>
-            )}
           </div>
         </div>
       )}

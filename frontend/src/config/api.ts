@@ -4,12 +4,12 @@ import { BASE_URL } from "./baseURL";
 
 export const getToken = () => {
   const storage: string | null = localStorage.getItem("authToken");
-
   return storage;
 };
 
 const api = async (path: string, method: string, body?: any) => {
   const localStorageToken: string | null = getToken();
+
   const accessToken: string | null = localStorageToken
     ? `Bearer ${localStorageToken}`
     : null;
